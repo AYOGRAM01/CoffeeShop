@@ -1,0 +1,43 @@
+gh{% extends 'base.html' %}
+
+{% block title %}Manage Coffee{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Manage Coffee</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for coffee in coffees %}
+            <tr>
+                <td>{{ coffee.name }}</td>
+                <td>${{ coffee.price }}</td>
+                <td>{{ coffee.quantity }}</td>
+                <td>
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="coffee_id" value="{{ coffee.id }}">
+                        <input type="number" name="new_quantity" value="{{ coffee.quantity }}" min="0" style="width: 80px;">
+                        <button type="submit" name="action" value="update_quantity" class="btn btn-sm btn-secondary">Update Qty</button>
+                    </form>
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="coffee_id" value="{{ coffee.id }}">
+                        <input type="number" name="new_price" value="{{ coffee.price }}" min="0" step="0.01" style="width: 80px;">
+                        <button type="submit" name="action" value="update_price" class="btn btn-sm btn-secondary">Update Price</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

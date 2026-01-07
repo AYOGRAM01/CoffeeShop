@@ -1,0 +1,24 @@
+/* Custom Navbar Styles */
+.navbar {
+  background-color: #8B4513 !important; /* SaddleBrown color for coffee theme */
+}
+
+.navbar-nav .nav-link {
+  color: #FFF8DC !important; /* Cream color for text */
+}
+
+.navbar-nav .nav-link:hover {
+  color: #FFD700 !important; /* Gold color on hover */
+}
+
+.dropdown-menu {
+  background-color: #8B4513;
+}
+
+.dropdown-item {
+  color: #FFF8DC !important;
+}
+
+.dropdown-item:hover {
+  background-color: #A0522D !important; /* Sienna color on hover */
+}

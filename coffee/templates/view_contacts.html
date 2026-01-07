@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}View Contacts{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Contact Submissions</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.message }}</td>
+                <td>{{ contact.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

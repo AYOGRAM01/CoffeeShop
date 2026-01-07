@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-lg border-0">
+      <div class="card-header bg-success text-white text-center py-4">
+        <h3 class="mb-0"><i class="fas fa-user-plus me-2"></i>Join Coffee Shop</h3>
+        <p class="mb-0">Create your account to start ordering delicious coffee!</p>
+      </div>
+      <div class="card-body p-4">
+        <form method="post" id="registerForm">
+          {% csrf_token %}
+          <div class="mb-4">
+            <label for="id_username" class="form-label fw-bold">
+              <i class="fas fa-user me-2"></i>Username
+            </label>
+            <input type="text" class="form-control form-control-lg" id="id_username" name="username"
+                   placeholder="Choose a username" required>
+            <div class="invalid-feedback">
+              Username must be 3-150 characters and contain only letters, numbers, and @/./+/-/_.
+            </div>
+            <div class="form-text">Choose a unique username for your account.</div>
+          </div>
+          <div class="mb-4">
+            <label for="id_password1" class="form-label fw-bold">
+              <i class="fas fa-lock me-2"></i>Password
+            </label>
+            <div class="input-group">
+              <input type="password" class="form-control form-control-lg" id="id_password1" name="password1"
+                     placeholder="Create a strong password" required>
+              <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">
+              Password must be at least 8 characters long.
+            </div>
+            <div class="form-text">Your password must contain at least 8 characters.</div>
+          </div>
+          <div class="mb-4">
+            <label for="id_password2" class="form-label fw-bold">
+              <i class="fas fa-lock me-2"></i>Confirm Password
+            </label>
+            <div class="input-group">
+              <input type="password" class="form-control form-control-lg" id="id_password2" name="password2"
+                     placeholder="Confirm your password" required>
+              <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">
+              Passwords must match.
+            </div>
+            <div class="form-text">Re-enter your password to confirm.</div>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success btn-lg" id="registerBtn">
+              <i class="fas fa-user-plus me-2"></i>Create Account
+            </button>
+          </div>
+        </form>
+        <div class="text-center mt-4">
+          <p class="mb-0">Already have an account?
+            <a href="{% url 'login' %}" class="text-success fw-bold text-decoration-none">
+              Login here
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword1 = document.getElementById('togglePassword1');
+    const togglePassword2 = document.getElementById('togglePassword2');
+    const password1Input = document.getElementById('id_password1');
+    const password2Input = document.getElementById('id_password2');
+    const registerForm = document.getElementById('registerForm');
+    const registerBtn = document.getElementById('registerBtn');
+
+    // Toggle password visibility for password1
+    togglePassword1.addEventListener('click', function() {
+        const type = password1Input.getAttribute('type') === 'password' ? 'text' : 'password';
+        password1Input.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    // Toggle password visibility for password2
+    togglePassword2.addEventListener('click', function() {
+        const type = password2Input.getAttribute('type') === 'password' ? 'text' : 'password';
+        password2Input.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    // Password strength indicator
+    password1Input.addEventListener('input', function() {
+        const password = this.value;
+        const strengthIndicator = document.getElementById('passwordStrength') || createStrengthIndicator();
+
+        if (password.length === 0) {
+            strengthIndicator.style.display = 'none';
+            return;
+        }
+
+        strengthIndicator.style.display = 'block';
+        let strength = 0;
+        let feedback = [];
+
+        if (password.length >= 8) strength++;
+        else feedback.push('At least 8 characters');
+
+        if (/[a-z]/.test(password)) strength++;
+        else feedback.push('Lowercase letter');
+
+        if (/[A-Z]/.test(password)) strength++;
+        else feedback.push('Uppercase letter');
+
+        if (/[0-9]/.test(password)) strength++;
+        else feedback.push('Number');
+
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        else feedback.push('Special character');
+
+        const colors = ['#dc3545', '#fd7e14', '#ffc107', '#20c997', '#28a745'];
+        const texts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+
+        strengthIndicator.style.backgroundColor = colors[Math.min(strength, 4)];
+        strengthIndicator.textContent = texts[Math.min(strength, 4)];
+    });
+
+    function createStrengthIndicator() {
+        const indicator = document.createElement('div');
+        indicator.id = 'passwordStrength';
+        indicator.style.cssText = `
+            margin-top: 5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            display: none;
+        `;
+        password1Input.parentNode.appendChild(indicator);
+        return indicator;
+    }
+
+    // Form validation
+    registerForm.addEventListener('submit', function(e) {
+        const username = document.getElementById('id_username');
+        const password1 = document.getElementById('id_password1');
+        const password2 = document.getElementById('id_password2');
+        let isValid = true;
+
+        // Reset validation
+        username.classList.remove('is-invalid');
+        password1.classList.remove('is-invalid');
+        password2.classList.remove('is-invalid');
+
+        // Username validation
+        if (!username.value.trim() || username.value.length < 3) {
+            username.classList.add('is-invalid');
+            isValid = false;
+        }
+
+        // Password validation
+        if (password1.value.length < 8) {
+            password1.classList.add('is-invalid');
+            isValid = false;
+        }
+
+        // Password confirmation
+        if (password1.value !== password2.value) {
+            password2.classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        } else {
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+            registerBtn.disabled = true;
+        }
+    });
+
+    // Real-time validation
+    document.getElementById('id_username').addEventListener('input', function() {
+        if (this.value.trim().length >= 3) {
+            this.classList.remove('is-invalid');
+        }
+    });
+
+    document.getElementById('id_password1').addEventListener('input', function() {
+        if (this.value.length >= 8) {
+            this.classList.remove('is-invalid');
+        }
+    });
+
+    document.getElementById('id_password2').addEventListener('input', function() {
+        if (this.value && this.value === password1Input.value) {
+            this.classList.remove('is-invalid');
+        }
+    });
+});
+</script>
+
+<style>
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.input-group .btn {
+    border-color: #ced4da;
+}
+
+.input-group .btn:hover {
+    background-color: #f8f9fa;
+}
+
+#passwordStrength {
+    font-weight: bold;
+    text-align: center;
+}
+</style>
+{% endblock %}

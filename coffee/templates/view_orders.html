@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}View Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>View Orders</h1>
+    <p>Here you can view and manage customer orders.</p>
+
+    {% if orders %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Payment Screenshot</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.user.username }}</td>
+                            <td>${{ order.total }}</td>
+                            <td>
+                                <span class="badge bg-{{ order.status|lower }}">{{ order.status }}</span>
+                            </td>
+                            <td>
+                                {% if order.payment_screenshot %}
+                                    <a href="{{ order.payment_screenshot.url }}" target="_blank">View Screenshot</a>
+                                {% else %}
+                                    No Screenshot
+                                {% endif %}
+                            </td>
+                            <td>{{ order.created_at|date:"M d, Y H:i" }}</td>
+                            <td>
+                                {% if order.status == 'pending' %}
+                                    <a href="{% url 'confirm_order' order.id %}" class="btn btn-success btn-sm">Confirm</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-3">Back to Admin Dashboard</a>
+</div>
+{% endblock %}
