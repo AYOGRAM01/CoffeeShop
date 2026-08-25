@@ -1,0 +1,166 @@
+
+<!-- MODERN COFFEESHOP THEME START -->
+<style>
+
+/* ===== Modern CoffeeShop Background ===== */
+:root {
+    --modern-bg: #f3eee8;
+    --modern-bg-soft: #faf8f5;
+    --modern-surface: #ffffff;
+    --modern-text: #2d2926;
+    --modern-muted: #756c64;
+    --modern-coffee: #8b5e3c;
+    --modern-coffee-dark: #68442d;
+    --modern-border: #e5ddd5;
+}
+
+/* Force a consistent modern background on every page */
+html,
+body {
+    background: var(--modern-bg) !important;
+    color: var(--modern-text);
+    min-height: 100%;
+}
+
+/* Cover common Bootstrap/template background classes */
+.bg-light,
+.bg-body-tertiary,
+.bg-body-secondary {
+    background-color: var(--modern-bg) !important;
+}
+
+/* Main content area */
+main,
+.container-fluid,
+.page-content {
+    background: transparent !important;
+}
+
+/* Modern white content surfaces */
+.card,
+.modal-content,
+.dropdown-menu,
+form.bg-light {
+    background-color: var(--modern-surface) !important;
+    border-color: var(--modern-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(45, 41, 38, 0.08);
+}
+
+/* Give common full-page auth sections the new background */
+.auth-page,
+.login-page,
+.register-page,
+.signup-page {
+    background: var(--modern-bg) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: #2d2926 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--modern-coffee) !important;
+    border-color: var(--modern-coffee) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--modern-coffee-dark) !important;
+    border-color: var(--modern-coffee-dark) !important;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+    border-color: var(--modern-border);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--modern-coffee);
+    box-shadow: 0 0 0 0.2rem rgba(139, 94, 60, 0.15);
+}
+
+</style>
+<!-- MODERN COFFEESHOP THEME END -->
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Checkout</h1>
+
+{% if items %}
+<div class="row">
+  <div class="col-md-8">
+    <h3>Order Summary</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              {% if item.coffee.image %}
+              <img src="{{ item.coffee.image.url }}" alt="{{ item.coffee.name }}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
+              {% endif %}
+              <div>
+                <h6 class="mb-0">{{ item.coffee.name }}</h6>
+                <small class="text-muted">{{ item.coffee.description|truncatewords:5 }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.coffee.price }}</td>
+          <td>${{ item.subtotal }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="3" class="text-end">Total:</th>
+          <th>${{ total }}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="col-md-4">
+    <h3>Shipping Information</h3>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" name="phone" required>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Place Order</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="col-12 text-center">
+    <p class="mb-4">Your cart is empty.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Start Shopping</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

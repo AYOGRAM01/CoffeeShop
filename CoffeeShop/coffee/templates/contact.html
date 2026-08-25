@@ -1,0 +1,150 @@
+
+<!-- MODERN COFFEESHOP THEME START -->
+<style>
+
+/* ===== Modern CoffeeShop Background ===== */
+:root {
+    --modern-bg: #f3eee8;
+    --modern-bg-soft: #faf8f5;
+    --modern-surface: #ffffff;
+    --modern-text: #2d2926;
+    --modern-muted: #756c64;
+    --modern-coffee: #8b5e3c;
+    --modern-coffee-dark: #68442d;
+    --modern-border: #e5ddd5;
+}
+
+/* Force a consistent modern background on every page */
+html,
+body {
+    background: var(--modern-bg) !important;
+    color: var(--modern-text);
+    min-height: 100%;
+}
+
+/* Cover common Bootstrap/template background classes */
+.bg-light,
+.bg-body-tertiary,
+.bg-body-secondary {
+    background-color: var(--modern-bg) !important;
+}
+
+/* Main content area */
+main,
+.container-fluid,
+.page-content {
+    background: transparent !important;
+}
+
+/* Modern white content surfaces */
+.card,
+.modal-content,
+.dropdown-menu,
+form.bg-light {
+    background-color: var(--modern-surface) !important;
+    border-color: var(--modern-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(45, 41, 38, 0.08);
+}
+
+/* Give common full-page auth sections the new background */
+.auth-page,
+.login-page,
+.register-page,
+.signup-page {
+    background: var(--modern-bg) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: #2d2926 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--modern-coffee) !important;
+    border-color: var(--modern-coffee) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--modern-coffee-dark) !important;
+    border-color: var(--modern-coffee-dark) !important;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+    border-color: var(--modern-border);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--modern-coffee);
+    box-shadow: 0 0 0 0.2rem rgba(139, 94, 60, 0.15);
+}
+
+</style>
+<!-- MODERN COFFEESHOP THEME END -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Contact Us</h1>
+        <p class="lead text-muted">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <i class="fas fa-map-marker-alt fa-3x text-primary mb-3"></i>
+              <h5 class="card-title">Visit Us</h5>
+              <p class="card-text text-muted">40, Fafunmi Road<br>Lagos State</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <i class="fas fa-phone fa-3x text-primary mb-3"></i>
+              <h5 class="card-title">Call Us</h5>
+              <p class="card-text text-muted">+234 8082022776-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow">
+        <div class="card-body p-5">
+          <form>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="subject" class="form-label">Subject</label>
+              <input type="text" class="form-control" id="subject" required>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea class="form-control" id="message" rows="5" required></textarea>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg px-5">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

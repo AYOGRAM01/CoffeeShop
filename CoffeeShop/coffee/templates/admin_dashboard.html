@@ -1,0 +1,185 @@
+
+<!-- MODERN COFFEESHOP THEME START -->
+<style>
+
+/* ===== Modern CoffeeShop Background ===== */
+:root {
+    --modern-bg: #f3eee8;
+    --modern-bg-soft: #faf8f5;
+    --modern-surface: #ffffff;
+    --modern-text: #2d2926;
+    --modern-muted: #756c64;
+    --modern-coffee: #8b5e3c;
+    --modern-coffee-dark: #68442d;
+    --modern-border: #e5ddd5;
+}
+
+/* Force a consistent modern background on every page */
+html,
+body {
+    background: var(--modern-bg) !important;
+    color: var(--modern-text);
+    min-height: 100%;
+}
+
+/* Cover common Bootstrap/template background classes */
+.bg-light,
+.bg-body-tertiary,
+.bg-body-secondary {
+    background-color: var(--modern-bg) !important;
+}
+
+/* Main content area */
+main,
+.container-fluid,
+.page-content {
+    background: transparent !important;
+}
+
+/* Modern white content surfaces */
+.card,
+.modal-content,
+.dropdown-menu,
+form.bg-light {
+    background-color: var(--modern-surface) !important;
+    border-color: var(--modern-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(45, 41, 38, 0.08);
+}
+
+/* Give common full-page auth sections the new background */
+.auth-page,
+.login-page,
+.register-page,
+.signup-page {
+    background: var(--modern-bg) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: #2d2926 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--modern-coffee) !important;
+    border-color: var(--modern-coffee) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--modern-coffee-dark) !important;
+    border-color: var(--modern-coffee-dark) !important;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+    border-color: var(--modern-border);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--modern-coffee);
+    box-shadow: 0 0 0 0.2rem rgba(139, 94, 60, 0.15);
+}
+
+</style>
+<!-- MODERN COFFEESHOP THEME END -->
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome to the admin panel. Here you can manage the coffee shop.</p>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Coffees</h5>
+                    <p class="card-text display-4">{{ total_coffees }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Orders</h5>
+                    <p class="card-text display-4">{{ pending_orders }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Contacts</h5>
+                    <p class="card-text display-4">{{ total_contacts }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Cards -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Coffee</h5>
+                    <p class="card-text">Update coffee quantities and prices.</p>
+                    <a href="{% url 'manage_coffee' %}" class="btn btn-primary">Go to Manage Coffee</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">View Orders</h5>
+                    <p class="card-text">View and confirm customer orders.</p>
+                    <a href="{% url 'view_orders' %}" class="btn btn-primary">Go to View Orders</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">View Contacts</h5>
+                    <p class="card-text">View customer contact submissions.</p>
+                    <a href="{% url 'view_contacts' %}" class="btn btn-primary">Go to View Contacts</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Orders</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_orders %}
+                        <ul class="list-group list-group-flush">
+                            {% for order in recent_orders %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Order #{{ order.id }} by {{ order.user.username }}
+                                    <span class="badge bg-{{ order.status|lower }} rounded-pill">{{ order.status }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'view_orders' %}" class="btn btn-link">View All Orders</a>
+                    {% else %}
+                        <p>No recent orders.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Coffee Shop</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Your Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .container {
+        flex: 1;
+      }
+      footer {
+        margin-top: auto;
+      }
+    </style>
+  
+<!-- MODERN COFFEESHOP THEME START -->
+<style>
+
+/* ===== Modern CoffeeShop Background ===== */
+:root {
+    --modern-bg: #f3eee8;
+    --modern-bg-soft: #faf8f5;
+    --modern-surface: #ffffff;
+    --modern-text: #2d2926;
+    --modern-muted: #756c64;
+    --modern-coffee: #8b5e3c;
+    --modern-coffee-dark: #68442d;
+    --modern-border: #e5ddd5;
+}
+
+/* Force a consistent modern background on every page */
+html,
+body {
+    background: var(--modern-bg) !important;
+    color: var(--modern-text);
+    min-height: 100%;
+}
+
+/* Cover common Bootstrap/template background classes */
+.bg-light,
+.bg-body-tertiary,
+.bg-body-secondary {
+    background-color: var(--modern-bg) !important;
+}
+
+/* Main content area */
+main,
+.container-fluid,
+.page-content {
+    background: transparent !important;
+}
+
+/* Modern white content surfaces */
+.card,
+.modal-content,
+.dropdown-menu,
+form.bg-light {
+    background-color: var(--modern-surface) !important;
+    border-color: var(--modern-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(45, 41, 38, 0.08);
+}
+
+/* Give common full-page auth sections the new background */
+.auth-page,
+.login-page,
+.register-page,
+.signup-page {
+    background: var(--modern-bg) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: #2d2926 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--modern-coffee) !important;
+    border-color: var(--modern-coffee) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--modern-coffee-dark) !important;
+    border-color: var(--modern-coffee-dark) !important;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+    border-color: var(--modern-border);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--modern-coffee);
+    box-shadow: 0 0 0 0.2rem rgba(139, 94, 60, 0.15);
+}
+
+</style>
+<!-- MODERN COFFEESHOP THEME END -->
+</head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+        {% if not user.is_staff %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cart ({{ cart_count }})
+          </a>
+          <ul class="dropdown-menu">
+            {% if cart_items %}
+              {% for item in cart_items %}
+              <li><a class="dropdown-item" href="{% url 'cart' %}">
+                <div class="d-flex align-items-center">
+                  {% if item.coffee.image %}
+                  <img src="{{ item.coffee.image.url }}" alt="{{ item.coffee.name }}" class="img-thumbnail me-2" style="width: 30px; height: 30px;">
+                  {% endif %}
+                  <div>
+                    <small>{{ item.coffee.name }} ({{ item.quantity }})</small><br>
+                    <small class="text-muted">${{ item.subtotal }}</small>
+                  </div>
+                </div>
+              </a></li>
+              {% endfor %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="{% url 'cart' %}">View Full Cart</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{% url 'cart' %}">Your cart is empty</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <span class="nav-link">Welcome, {{ user.username }}</span>
+        </li>
+        {% if user.is_staff %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+        {% endif %}
+      </ul>
+      <form class="d-flex ms-3" role="search" action="{% url 'search' %}" method="get">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search coffee..." aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container my-2">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Page Content -->
+    <div class="container my-4">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+      <div class="container">
+        <p class="mb-2">Follow me on social media:</p>
+        <div class="d-flex justify-content-center">
+          <a href="https://www.instagram.com/ayogram_1?igsh=MTZodTMyY255cHh6aw==" class="text-white me-3" target="_blank">
+            <i class="fab fa-instagram"></i> 
+          </a>
+          <a href="https://www.linkedin.com/in/waliyi-balogun-8045a930b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-white me-3" target="_blank">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/AYOGRAM01" class="text-white" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <p class="mt-3 mb-0">&copy; 2026 Coffee Shop. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

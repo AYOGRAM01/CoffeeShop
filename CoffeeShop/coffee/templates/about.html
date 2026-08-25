@@ -1,0 +1,96 @@
+
+<!-- MODERN COFFEESHOP THEME START -->
+<style>
+
+/* ===== Modern CoffeeShop Background ===== */
+:root {
+    --modern-bg: #f3eee8;
+    --modern-bg-soft: #faf8f5;
+    --modern-surface: #ffffff;
+    --modern-text: #2d2926;
+    --modern-muted: #756c64;
+    --modern-coffee: #8b5e3c;
+    --modern-coffee-dark: #68442d;
+    --modern-border: #e5ddd5;
+}
+
+/* Force a consistent modern background on every page */
+html,
+body {
+    background: var(--modern-bg) !important;
+    color: var(--modern-text);
+    min-height: 100%;
+}
+
+/* Cover common Bootstrap/template background classes */
+.bg-light,
+.bg-body-tertiary,
+.bg-body-secondary {
+    background-color: var(--modern-bg) !important;
+}
+
+/* Main content area */
+main,
+.container-fluid,
+.page-content {
+    background: transparent !important;
+}
+
+/* Modern white content surfaces */
+.card,
+.modal-content,
+.dropdown-menu,
+form.bg-light {
+    background-color: var(--modern-surface) !important;
+    border-color: var(--modern-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(45, 41, 38, 0.08);
+}
+
+/* Give common full-page auth sections the new background */
+.auth-page,
+.login-page,
+.register-page,
+.signup-page {
+    background: var(--modern-bg) !important;
+}
+
+/* Navbar */
+.navbar {
+    background: #2d2926 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--modern-coffee) !important;
+    border-color: var(--modern-coffee) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--modern-coffee-dark) !important;
+    border-color: var(--modern-coffee-dark) !important;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+    border-color: var(--modern-border);
+    border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--modern-coffee);
+    box-shadow: 0 0 0 0.2rem rgba(139, 94, 60, 0.15);
+}
+
+</style>
+<!-- MODERN COFFEESHOP THEME END -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-4">
+  <h1>About Us</h1>
+  <p>Welcome to Feel Good Coffee! We are passionate about serving the best coffee in town.</p>
+  <p>Our mission is to provide high-quality coffee that makes you feel good every day.</p>
+</div>
+{% endblock %}
