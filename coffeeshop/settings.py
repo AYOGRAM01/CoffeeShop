@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure--6qx(hz2-n((@3o*-6falirx+c4#7!^qjg$m2o%#_z#g6_tdrc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["ayogram-coffeeshop.onrender.com",
+    "localhost",
+    "127.0.0.1",]
 
 
 # Application definition
